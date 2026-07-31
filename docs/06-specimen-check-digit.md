@@ -51,3 +51,20 @@ reason this scheme was chosen over a simpler one.
   calculate node recomputes the check digit from the typed numeric portion;
   a constraint compares the two and blocks submission (with a clear error
   message) if they don't match, before the enumerator moves on.
+
+## XForm implementation note (Section 5 build)
+
+ODK's expression language has no loop construct, so the modulus-11 formula is
+hand-unrolled in the XLSForm as six separate `substr()` calculate fields (one
+per digit), a weighted sum, a remainder, and a final if()-based lookup —
+rather than the Python loop used in scripts/check_digit.py.
+
+The two implementations pair digits to weights from opposite directions
+(Python: weights 2-7 applied right to left; XForm: weights 7-2 applied left
+to right on the fixed 6-digit string), which are mathematically the same
+pairing, just described from opposite ends. This was verified, not just
+argued: both 480000 (expected check digit 1) and 480001 (expected check
+digit X, the one case that exercises the remainder=1 branch) were traced
+by hand through the compiled XForm calculate expressions and matched the
+original script's output exactly. See scripts/check_digit.py for the
+reference implementation these were checked against.

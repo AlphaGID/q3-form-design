@@ -169,6 +169,67 @@ survey_rows = [
 
     row("end group", "", ""),
 
+    row("begin group", "section5_module", "Section 5: Specimen collection",
+        relevant="${eligible_for_section4}='1'"),
+
+    row("select_one yesno", "age12plus",
+        "5.01 Is the child aged 12 completed months or older?", required="yes"),
+
+    row("select_one yesno", "specimen_obtained",
+        "5.02 Was a stool specimen obtained from this child?",
+        relevant="${age12plus}='1'", required="${age12plus}='1'"),
+
+    row("text", "specimen_number",
+        "5.03 Specimen label number (6 digits printed after the BSN prefix)",
+        relevant="${specimen_obtained}='1'", required="${specimen_obtained}='1'",
+        calculation="",
+        constraint="regex(.,'^[0-9]{6}$') and number(.) >= number(${range_start_calc}) and number(.) <= number(${range_end_calc})",
+        constraint_message="Must be exactly 6 digits and within your team's issued label range (${range_start_calc}-${range_end_calc})"),
+
+    row("calculate", "range_start_calc", "",
+        calculation="pulldata('specimen_label_allocation','range_start','team_code',${team_code_calc})"),
+    row("calculate", "range_end_calc", "",
+        calculation="pulldata('specimen_label_allocation','range_end','team_code',${team_code_calc})"),
+
+    row("calculate", "specimen_digit0", "",
+        calculation="if(string-length(${specimen_number})=6, number(substr(${specimen_number},0,1)), 0)"),
+    row("calculate", "specimen_digit1", "",
+        calculation="if(string-length(${specimen_number})=6, number(substr(${specimen_number},1,2)), 0)"),
+    row("calculate", "specimen_digit2", "",
+        calculation="if(string-length(${specimen_number})=6, number(substr(${specimen_number},2,3)), 0)"),
+    row("calculate", "specimen_digit3", "",
+        calculation="if(string-length(${specimen_number})=6, number(substr(${specimen_number},3,4)), 0)"),
+    row("calculate", "specimen_digit4", "",
+        calculation="if(string-length(${specimen_number})=6, number(substr(${specimen_number},4,5)), 0)"),
+    row("calculate", "specimen_digit5", "",
+        calculation="if(string-length(${specimen_number})=6, number(substr(${specimen_number},5,6)), 0)"),
+
+    row("calculate", "specimen_weighted_sum", "",
+        calculation="(${specimen_digit0}*7)+(${specimen_digit1}*6)+(${specimen_digit2}*5)+(${specimen_digit3}*4)+(${specimen_digit4}*3)+(${specimen_digit5}*2)"),
+    row("calculate", "specimen_remainder", "", calculation="${specimen_weighted_sum} mod 11"),
+    row("calculate", "specimen_computed_check_digit", "",
+        calculation="if(${specimen_remainder}=0,'0',if(${specimen_remainder}=1,'X',string(11 - ${specimen_remainder})))"),
+
+    row("text", "specimen_check_digit", "Check digit (single digit 0-9, or X)",
+        relevant="${specimen_obtained}='1'", required="${specimen_obtained}='1'",
+        constraint=". = ${specimen_computed_check_digit}",
+        constraint_message="Check digit does not match this label number. Please re-check both and re-enter."),
+
+    row("time", "specimen_coldbox_time", "5.04 Time the specimen was placed in the cold box",
+        relevant="${specimen_obtained}='1'", required="${specimen_obtained}='1'"),
+
+    row("decimal", "specimen_coldbox_temp", "5.05 Temperature shown on the cold box thermometer at that time",
+        relevant="${specimen_obtained}='1'", required="${specimen_obtained}='1'",
+        constraint=". >= 2.0 and . <= 8.0",
+        constraint_message="Enter a temperature between 2.0 and 8.0 degrees C"),
+
+    row("select_one reason_no_specimen_list", "reason_no_specimen", "5.06 Reason no specimen was obtained",
+        relevant="${specimen_obtained}='2'", required="${specimen_obtained}='2'"),
+    row("text", "reason_no_specimen_other", "5.07 If code 96, specify",
+        relevant="${reason_no_specimen}='96'", required="${reason_no_specimen}='96'"),
+
+    row("end group", "", ""),
+
     row("end repeat", "", ""),
 
     row("calculate", "eligible_children_count", "", calculation="sum(../roster/eligible_for_section4)"),
@@ -233,6 +294,12 @@ choices_sheet.append(["position_list", "2", "Standing height"])
 choices_sheet.append(["photo_taken_list", "1", "Yes"])
 choices_sheet.append(["photo_taken_list", "2", "No, not available"])
 choices_sheet.append(["photo_taken_list", "3", "Caregiver declined"])
+
+choices_sheet.append(["reason_no_specimen_list", "1", "Caregiver refused"])
+choices_sheet.append(["reason_no_specimen_list", "2", "Child absent"])
+choices_sheet.append(["reason_no_specimen_list", "3", "Unable to produce"])
+choices_sheet.append(["reason_no_specimen_list", "4", "Container spoiled"])
+choices_sheet.append(["reason_no_specimen_list", "96", "Other"])
 
 wb.save("form/HH2026v1.xlsx")
 print("form/HH2026v1.xlsx written with Section 1")
