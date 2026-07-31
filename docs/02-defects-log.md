@@ -34,3 +34,32 @@ is visible rather than hidden.
 
 (further defects to be added: contradictions, ambiguous/missing skip logic, and
 paper-design gaps that permit unanalysable data — per the assessment's Q3 requirement)
+
+---
+
+## D03 — pyxform instance-duplication bug: pulldata() vs select_one_from_file filename mismatch
+
+**Where it shows up:** any field referenced by both a select_one_from_file
+question (e.g. settlement, from settlements.csv) and a pulldata() calculation
+elsewhere in the form (e.g. the GPS plausibility check, which pulls
+settlements.csv's own lat/long back out for the same settlement).
+
+**What went wrong:** select_one_from_file wards.csv creates a secondary XForm
+instance named "wards" (extension stripped). pulldata('settlements.csv', ...)
+independently creates a second, separate instance literally named
+"settlements.csv" (extension kept), and pyxform then appends another .csv
+when resolving the file path, producing a reference to a non-existent file
+("settlements.csv.csv"). This is caught by pyxform's own "Conversion
+complete!" message with no error or warning shown, so silent unless the
+compiled XML is inspected directly.
+
+**How it was caught:** by grepping the compiled output XML for instance IDs
+and file references after building Section 1, rather than trusting a
+successful conversion message alone.
+
+**Resolution:** always call pulldata() with the filename WITHOUT the .csv
+extension (e.g. pulldata('settlements', ...), not
+pulldata('settlements.csv', ...)) whenever a select_one_from_file question
+already references that same file elsewhere in the form. Applied to all four
+affected calls (team_code lookup, settlement lat/long x2, previous-round
+household id lookup).

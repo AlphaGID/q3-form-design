@@ -57,7 +57,7 @@ survey_rows = [
         required="yes", choice_filter="role='Enumerator'"),
 
     row("calculate", "team_code_calc", "",
-        calculation="pulldata('staff_roster.csv','team_code','name',${enumerator_code})"),
+        calculation="pulldata('staff_roster','team_code','name',${enumerator_code})"),
     row("text", "team_code_display", "1.09 Team code",
         calculation="${team_code_calc}", readonly="yes"),
 
@@ -71,9 +71,9 @@ survey_rows = [
     row("calculate", "gps_lon", "",
         calculation="substring-before(substring-after(${gps_reading},' '),' ')"),
     row("calculate", "settlement_lat_calc", "",
-        calculation="pulldata('settlements.csv','latitude','name',${settlement})"),
+        calculation="pulldata('settlements','latitude','name',${settlement})"),
     row("calculate", "settlement_lon_calc", "",
-        calculation="pulldata('settlements.csv','longitude','name',${settlement})"),
+        calculation="pulldata('settlements','longitude','name',${settlement})"),
     row("note", "gps_plausibility_flag",
         "This GPS reading looks far from the registered location of the selected settlement. Please confirm this is the correct dwelling before continuing.",
         relevant="(${gps_reading}!='') and ((abs(number(${gps_lat}) - number(${settlement_lat_calc})) > 0.05) or (abs(number(${gps_lon}) - number(${settlement_lon_calc})) > 0.05))"),
@@ -83,7 +83,7 @@ survey_rows = [
     row("text", "prev_household_id",
         "1.13 Record the household identifier allocated in the October 2025 round.",
         relevant="${prev_round_visited}='1'",
-        constraint="pulldata('previous_round_households.csv','household_id','household_id',.) != ''",
+        constraint="pulldata('previous_round_households','household_id','household_id',.) != ''",
         constraint_message="This household ID was not found in the previous round register. Please check and re-enter."),
 
     row("select_one visit_result_list", "result_of_visit", "1.14 Result of visit", required="yes"),
