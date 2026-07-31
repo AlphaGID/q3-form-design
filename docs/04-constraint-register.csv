@@ -1,0 +1,13 @@
+question_id,constraint_type,rule,prevents,source
+1.02,select_one,LGA must be one of the 4 codes in lgas.csv,enumerator entering a non-existent LGA code,lgas.csv (data pack)
+1.03,select_one + cascade,Ward must be one of wards.csv filtered to selected LGA (lga_code = ${lga}),ward/LGA mismatches; ward chosen outside the assigned LGA,wards.csv (data pack)
+1.04,select_one + cascade,Settlement must be one of settlements.csv filtered to selected ward (ward_code = ${ward}),settlement/ward mismatches; unusable 2500-row list on device,settlements.csv (data pack) + judgement on cascade design
+1.06,range,Structure number numeric, 1 to 999 (3-digit box on paper),non-numeric or out-of-box-width entry,judgement (paper form allots 3 boxes)
+1.07,range,Household serial number numeric, 1 to 999 (3-digit box on paper),non-numeric or out-of-box-width entry,judgement (paper form allots 3 boxes)
+1.08,select_one_from_file,Enumerator code must exist in staff_roster.csv with role = Enumerator,recording a non-existent or wrongly-typed enumerator code,staff_roster.csv (data pack)
+1.09,derived,Team code auto-filled from staff_roster.csv based on enumerator code (team_code column),team code disagreeing with the enumerator's actual team,staff_roster.csv (data pack) + judgement (avoid re-asking a value the roster already fixes)
+1.10,range + date,Date of visit must fall within the fieldwork window (1-30 June 2026 per form header),dates outside the fieldwork period being recorded as valid,questionnaire header ("Fieldwork period 1 to 30 June 2026")
+1.11,soft/plausibility,GPS reading compared against selected settlement's registered lat/long (settlements.csv/geojson); flagged not blocked if far outside expected range,silently accepting a GPS fix from the wrong location,settlements.csv/geojson (data pack) + judgement (soft check only; dwellings aren't at centroid)
+1.12,skip logic,"If 1.12 = 2 (No) or 8 (Do not know), skip to 1.14",enumerator completing 1.13 when there is no prior-round household to reference,questionnaire skip instruction (stated on paper)
+1.13,select_one_from_file,"If shown, household id must exist in previous_round_households.csv",recording a prior-round id that doesn't exist in the register,previous_round_households.csv (data pack)
+1.14,skip logic,"If 1.14 in {2,3,4}, form ends; no further sections rendered",enumerator continuing to Sections 2+ on a non-completed visit,questionnaire skip instruction (stated on paper)
