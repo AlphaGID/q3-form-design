@@ -32,6 +32,27 @@ is visible rather than hidden.
 
 ---
 
+## D02 — Sentinel code field-width ambiguity (4.06)
+
+**Where it shows up:** Question 4.06 (height/length) allots 3 digit boxes plus
+a decimal on paper (000.0-999.9), but the not-measured sentinel is written as
+plain "99". The paper form does not resolve whether the sentinel should be
+entered as "99", "099.9", or some other value consistent with the field's
+own box width.
+
+**Resolution: resolved in the form**, not escalated. Unlike D01, this is a
+formatting ambiguity rather than a missing external input the design
+genuinely depends on — it can be closed by a form design decision without
+ministry sign-off.
+
+**What the form does:** per docs/05-sentinel-coding-scheme.md, 4.05 and 4.06
+are each split into a numeric value field plus a separate measured/not-measured
+status field. The sentinel is never typed into the numeric field at all, so
+the box-width ambiguity is eliminated rather than resolved by picking one of
+the ambiguous readings.
+
+---
+
 (further defects to be added: contradictions, ambiguous/missing skip logic, and
 paper-design gaps that permit unanalysable data — per the assessment's Q3 requirement)
 
