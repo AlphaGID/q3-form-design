@@ -1,0 +1,83 @@
+field_name,question_number,xlsform_type,label,kind
+lga,1.02,select_one lga_list,1.02 Local Government Area,enumerator-entered
+ward,1.03,select_one_from_file wards.csv,1.03 Ward,enumerator-entered
+settlement,1.04,select_one_from_file settlements.csv,1.04 Settlement,enumerator-entered
+settlement_known_locally,1.05,select_one yesno,1.05 Is the settlement known locally by a different name?,enumerator-entered
+settlement_local_name,,text,Name used locally,enumerator-entered
+structure_number,1.06,integer,1.06 Structure number painted on the dwelling,enumerator-entered
+hh_serial_number,1.07,integer,1.07 Household serial number within the settlement,enumerator-entered
+enumerator_code,1.08,select_one_from_file staff_roster.csv,1.08 Enumerator code,enumerator-entered
+team_code_calc,,calculate,,derived/internal (no paper question number)
+team_code_display,1.09,text,1.09 Team code,enumerator-entered
+visit_date,1.10,date,1.10 Date of visit,enumerator-entered
+gps_reading,1.11,geopoint,1.11 Record the GPS reading taken at the entrance to the dwelling.,enumerator-entered
+gps_lat,,calculate,,derived/internal (no paper question number)
+gps_lon,,calculate,,derived/internal (no paper question number)
+settlement_lat_calc,,calculate,,derived/internal (no paper question number)
+settlement_lon_calc,,calculate,,derived/internal (no paper question number)
+gps_plausibility_flag,,note,This GPS reading looks far from the registered location of the selected settlement. Please confirm this is the correct dwelling before continuing.,display note (not a stored response)
+prev_round_visited,1.12,select_one visited_previous_list,1.12 Was this household visited during the October 2025 round?,enumerator-entered
+prev_household_id,1.13,text,1.13 Record the household identifier allocated in the October 2025 round.,enumerator-entered
+result_of_visit,1.14,select_one visit_result_list,1.14 Result of visit,enumerator-entered
+consent_read_aloud,2.01,select_one yesno,2.01 Consent statement read aloud to the respondent in full?,enumerator-entered
+consent_given,2.02,select_one consent_list,2.02 Does the respondent consent to the household interview?,enumerator-entered
+respondent_relationship,2.03,select_one relationship_list,2.03 Relationship of the respondent to the head of household,enumerator-entered
+household_size,3.01,integer,3.01 How many people usually live in this household?,enumerator-entered
+name_initials,,text,(2) Name or initials,enumerator-entered
+relationship_to_head,,select_one relationship_list,(3) Relationship to head,enumerator-entered
+sex,,select_one sex_list,(4) Sex,enumerator-entered
+under5,,select_one yesno,Is this person under 5 years old?,enumerator-entered
+age_years,,integer,(5) Age in completed years,enumerator-entered
+age_months,,integer,(6) Age in completed months (under 5 only),enumerator-entered
+eligible_for_section4,,calculate,,derived/internal (no paper question number)
+roster_line_number,,calculate,,derived/internal (no paper question number)
+s4_child_ref,,note,"This module is for: ${name_initials}, ${age_months} months, line ${roster_line_number}",display note (not a stored response)
+weight_status,4.05,select_one measured_status_list,4.05 Weight of the child,enumerator-entered
+weight_kg,,decimal,Weight (kg),enumerator-entered
+height_status,4.06,select_one measured_status_list,4.06 Length or height of the child,enumerator-entered
+height_cm,,decimal,Length or height (cm),enumerator-entered
+measurement_position,4.07,select_one position_list,4.07 Position in which the child was measured,enumerator-entered
+card_seen,4.08,select_one card_seen_list,4.08 May I see the child's vaccination card or health record?,enumerator-entered
+measles_on_card,4.09,select_one yesno,4.09 Copy from the card: is a measles dose recorded?,enumerator-entered
+measles_ever,4.10,select_one yesnodk_list,4.10 Has this child ever received a measles vaccination?,enumerator-entered
+diarrhoea_14d,4.11,select_one yesnodk_list,4.11 Has this child had diarrhoea in the past 14 days?,enumerator-entered
+antibiotic_30d,4.12,select_one yesnodk_list,4.12 Has this child taken any antibiotic medicine in the past 30 days?,enumerator-entered
+antibiotic_name,4.13/4.14,text,4.13/4.14 Which antibiotic was taken? Record the name as reported by the caregiver.,enumerator-entered
+antibiotic_no_prescription,4.15,select_one yesnodk_list,4.15 Was the medicine obtained without a prescription from a health worker?,enumerator-entered
+antibiotic_photo_taken,4.16,select_one photo_taken_list,4.16 Was a photograph of the medicine packaging taken?,enumerator-entered
+age12plus,5.01,select_one yesno,5.01 Is the child aged 12 completed months or older?,enumerator-entered
+specimen_obtained,5.02,select_one yesno,5.02 Was a stool specimen obtained from this child?,enumerator-entered
+specimen_number,5.03,text,5.03 Specimen label number (6 digits printed after the BSN prefix),enumerator-entered
+range_start_calc,,calculate,,derived/internal (no paper question number)
+range_end_calc,,calculate,,derived/internal (no paper question number)
+specimen_digit0,,calculate,,derived/internal (no paper question number)
+specimen_digit1,,calculate,,derived/internal (no paper question number)
+specimen_digit2,,calculate,,derived/internal (no paper question number)
+specimen_digit3,,calculate,,derived/internal (no paper question number)
+specimen_digit4,,calculate,,derived/internal (no paper question number)
+specimen_digit5,,calculate,,derived/internal (no paper question number)
+specimen_weighted_sum,,calculate,,derived/internal (no paper question number)
+specimen_remainder,,calculate,,derived/internal (no paper question number)
+specimen_computed_check_digit,,calculate,,derived/internal (no paper question number)
+specimen_check_digit,,text,"Check digit (single digit 0-9, or X)",enumerator-entered
+specimen_coldbox_time,5.04,time,5.04 Time the specimen was placed in the cold box,enumerator-entered
+specimen_coldbox_temp,5.05,decimal,5.05 Temperature shown on the cold box thermometer at that time,enumerator-entered
+reason_no_specimen,5.06,select_one reason_no_specimen_list,5.06 Reason no specimen was obtained,enumerator-entered
+reason_no_specimen_other,5.07,text,"5.07 If code 96, specify",enumerator-entered
+eligible_children_count,,calculate,,derived/internal (no paper question number)
+eligible_children_display,3.02,text,3.02 Number of children aged 9 to 59 completed months (calculated automatically from the roster),enumerator-entered
+water_source,6.01,select_one water_source_list,6.01 What is the main source of drinking water for members of this household?,enumerator-entered
+toilet_type,6.02,select_one toilet_list,6.02 What kind of toilet facility do members of this household usually use?,enumerator-entered
+keeps_animals,6.03,select_one yesno,6.03 Does this household keep poultry or livestock inside the compound?,enumerator-entered
+animal_antibiotics_12m,6.04,select_one yesnodk_list,6.04 Have any antibiotic medicines been given to these animals in the past 12 months?,enumerator-entered
+handwashing_station,6.05,select_one handwashing_list,6.05 Observe: is there a handwashing station with both soap and water available?,enumerator-entered
+hh_diarrhoea_2w,6.06,select_one yesnodk_list,6.06 Has any member of this household had diarrhoea in the past two weeks?,enumerator-entered
+household_assets,6.07,select_multiple assets_list,6.07 Which of the following does this household own?,enumerator-entered
+interview_end_time,7.01,time,7.01 Time the interview ended,enumerator-entered
+office_observation,7.02,text,7.02 Record any observation that may help the office interpret this form.,enumerator-entered
+enumerator_signature,7.03,text,7.03 Enumerator signature,enumerator-entered
+enumerator_signature_date,,date,Enumerator signature date,enumerator-entered
+supervisor_code,7.04,select_one_from_file staff_roster.csv,7.04 Supervisor code,enumerator-entered
+supervisor_decision,7.05,select_one supervisor_decision_list,7.05 Supervisor decision on this form,enumerator-entered
+supervisor_signature,7.06,text,7.06 Supervisor signature,enumerator-entered
+supervisor_signature_date,,date,Supervisor signature date,enumerator-entered
