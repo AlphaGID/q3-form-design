@@ -17,3 +17,13 @@ question_id,constraint_type,rule,prevents,source
 3.02,derived + consistency,Value at 3.02 must equal count of roster rows where column (7) = eligible (age 9-59 completed months),enumerator manually miscounting eligible children instead of the system deriving it,questionnaire logic (column 7 is marked "office use" on paper; digitised form can compute this instead of relying on a clerk)
 3.02,skip logic,"If 3.02 = 00, skip to Section 6",enumerator opening Section 4 with zero eligible children,questionnaire skip instruction (stated on paper)
 4.count,consistency,Number of Section 4 modules completed must equal the value entered at 3.02,fewer or more child modules completed than the stated eligible count,questionnaire requirement (assessment explicitly requires reconciling eligible children count against completed child modules)
+4.05_value,range + split field,"Weight numeric, 2.0-30.0 kg; blank (not 99) when not measured",99 sentinel being averaged in as a real weight,judgement (no range on paper) + coding-scheme decision (docs/05-sentinel-coding-scheme.md)
+4.05_status,select_one,"Measured / Not measured, drives whether 4.05_value is asked",loss of the not-measured case once split from the value field,judgement (coding-scheme decision)
+4.06_value,range + split field,"Height/length numeric, 60.0-120.0 cm; blank (not 99) when not measured",99 sentinel being averaged in as a real height; resolves D02 field-width ambiguity,judgement (no range on paper) + coding-scheme decision
+4.06_status,select_one,"Measured / Not measured, drives whether 4.06_value is asked",loss of the not-measured case once split from the value field,judgement (coding-scheme decision)
+4.07,relevant,Only asked when 4.06_status = measured,recording a measurement position for a child who was never measured,judgement (logical dependency on 4.06)
+4.08,skip logic,"If 4.08 = 2 (No card seen), skip to 4.10",asking 4.09 (card content) when no card was seen,questionnaire skip instruction (stated on paper)
+4.09,skip logic,"After 4.09, skip to 4.11",asking 4.10 (recall-based measles question) when card-based answer already obtained,questionnaire skip instruction (stated on paper)
+4.12,skip logic,"If 4.12 in {2,8}, skip to Section 5",asking 4.13-4.16 (antibiotic detail) when no antibiotic was reported,questionnaire skip instruction (stated on paper)
+4.13,relevant,Free text pending real medicine list (see D01),recording a fabricated antibiotic code,defects log D01
+4.14,relevant + required,"Required only when 4.13 = 96 (Other)",Other selected with no free-text detail captured,questionnaire logic ("Other, specify" pattern)
