@@ -238,6 +238,47 @@ survey_rows = [
         calculation="${eligible_children_count}", readonly="yes"),
 
     row("end group", "", ""),
+
+    row("begin group", "section6", "Section 6: Household environment",
+        relevant="${result_of_visit}='1' and ${consent_given}='1'"),
+
+    row("select_one water_source_list", "water_source",
+        "6.01 What is the main source of drinking water for members of this household?", required="yes"),
+    row("select_one toilet_list", "toilet_type",
+        "6.02 What kind of toilet facility do members of this household usually use?", required="yes"),
+    row("select_one yesno", "keeps_animals",
+        "6.03 Does this household keep poultry or livestock inside the compound?", required="yes"),
+    row("select_one yesnodk_list", "animal_antibiotics_12m",
+        "6.04 Have any antibiotic medicines been given to these animals in the past 12 months?",
+        relevant="${keeps_animals}='1'", required="${keeps_animals}='1'"),
+    row("select_one handwashing_list", "handwashing_station",
+        "6.05 Observe: is there a handwashing station with both soap and water available?", required="yes"),
+    row("select_one yesnodk_list", "hh_diarrhoea_2w",
+        "6.06 Has any member of this household had diarrhoea in the past two weeks?", required="yes"),
+    row("select_multiple assets_list", "household_assets",
+        "6.07 Which of the following does this household own?", required="yes",
+        constraint="not(selected(., 'H')) or count-selected(.) = 1",
+        constraint_message="'None of these' cannot be selected together with any other option"),
+
+    row("end group", "", ""),
+
+    row("begin group", "section7", "Section 7: Close-out and supervisor review",
+        relevant="${result_of_visit}='1' and ${consent_given}='1'"),
+
+    row("time", "interview_end_time", "7.01 Time the interview ended", required="yes"),
+    row("text", "office_observation",
+        "7.02 Record any observation that may help the office interpret this form."),
+    row("text", "enumerator_signature", "7.03 Enumerator signature", required="yes"),
+    row("date", "enumerator_signature_date", "Enumerator signature date", required="yes"),
+
+    row("select_one_from_file staff_roster.csv", "supervisor_code", "7.04 Supervisor code",
+        required="yes", choice_filter="role='Supervisor'"),
+    row("select_one supervisor_decision_list", "supervisor_decision",
+        "7.05 Supervisor decision on this form", required="yes"),
+    row("text", "supervisor_signature", "7.06 Supervisor signature", required="yes"),
+    row("date", "supervisor_signature_date", "Supervisor signature date", required="yes"),
+
+    row("end group", "", ""),
 ]
 
 for r in survey_rows:
@@ -300,6 +341,45 @@ choices_sheet.append(["reason_no_specimen_list", "2", "Child absent"])
 choices_sheet.append(["reason_no_specimen_list", "3", "Unable to produce"])
 choices_sheet.append(["reason_no_specimen_list", "4", "Container spoiled"])
 choices_sheet.append(["reason_no_specimen_list", "96", "Other"])
+
+choices_sheet.append(["water_source_list", "1", "Piped into dwelling"])
+choices_sheet.append(["water_source_list", "2", "Piped into compound"])
+choices_sheet.append(["water_source_list", "3", "Public tap or standpipe"])
+choices_sheet.append(["water_source_list", "4", "Tube well or borehole"])
+choices_sheet.append(["water_source_list", "5", "Protected dug well"])
+choices_sheet.append(["water_source_list", "6", "Unprotected dug well"])
+choices_sheet.append(["water_source_list", "7", "Protected spring"])
+choices_sheet.append(["water_source_list", "8", "Unprotected spring"])
+choices_sheet.append(["water_source_list", "9", "Rainwater"])
+choices_sheet.append(["water_source_list", "10", "Tanker or cart"])
+choices_sheet.append(["water_source_list", "11", "Surface water"])
+
+choices_sheet.append(["toilet_list", "1", "Flush to sewer"])
+choices_sheet.append(["toilet_list", "2", "Flush to septic tank"])
+choices_sheet.append(["toilet_list", "3", "Flush to pit latrine"])
+choices_sheet.append(["toilet_list", "4", "Ventilated improved pit"])
+choices_sheet.append(["toilet_list", "5", "Pit latrine with slab"])
+choices_sheet.append(["toilet_list", "6", "Pit latrine without slab"])
+choices_sheet.append(["toilet_list", "7", "Composting toilet"])
+choices_sheet.append(["toilet_list", "8", "Bucket"])
+choices_sheet.append(["toilet_list", "9", "No facility or bush"])
+
+choices_sheet.append(["handwashing_list", "1", "Observed, soap and water"])
+choices_sheet.append(["handwashing_list", "2", "Reported only, not observed"])
+choices_sheet.append(["handwashing_list", "3", "Not present"])
+
+choices_sheet.append(["assets_list", "A", "Radio"])
+choices_sheet.append(["assets_list", "B", "Television"])
+choices_sheet.append(["assets_list", "C", "Mobile telephone"])
+choices_sheet.append(["assets_list", "D", "Bicycle"])
+choices_sheet.append(["assets_list", "E", "Motorcycle"])
+choices_sheet.append(["assets_list", "F", "Car or truck"])
+choices_sheet.append(["assets_list", "G", "Refrigerator"])
+choices_sheet.append(["assets_list", "H", "None of these"])
+
+choices_sheet.append(["supervisor_decision_list", "1", "Accept"])
+choices_sheet.append(["supervisor_decision_list", "2", "Return for correction"])
+choices_sheet.append(["supervisor_decision_list", "3", "Void"])
 
 wb.save("form/HH2026v1.xlsx")
 print("form/HH2026v1.xlsx written with Section 1")
