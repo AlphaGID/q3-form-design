@@ -8,7 +8,7 @@ structure_number,1.06,integer,1.06 Structure number painted on the dwelling,enum
 hh_serial_number,1.07,integer,1.07 Household serial number within the settlement,enumerator-entered
 enumerator_code,1.08,select_one_from_file staff_roster.csv,1.08 Enumerator code,enumerator-entered
 team_code_calc,,calculate,,derived/internal (no paper question number)
-team_code_display,1.09,text,1.09 Team code,enumerator-entered
+team_code_display,1.09,text,1.09 Team code,"auto-calculated, displayed read-only (corresponds to a paper question)"
 visit_date,1.10,date,1.10 Date of visit,enumerator-entered
 gps_reading,1.11,geopoint,1.11 Record the GPS reading taken at the entrance to the dwelling.,enumerator-entered
 gps_lat,,calculate,,derived/internal (no paper question number)
@@ -65,7 +65,7 @@ specimen_coldbox_temp,5.05,decimal,5.05 Temperature shown on the cold box thermo
 reason_no_specimen,5.06,select_one reason_no_specimen_list,5.06 Reason no specimen was obtained,enumerator-entered
 reason_no_specimen_other,5.07,text,"5.07 If code 96, specify",enumerator-entered
 eligible_children_count,,calculate,,derived/internal (no paper question number)
-eligible_children_display,3.02,text,3.02 Number of children aged 9 to 59 completed months (calculated automatically from the roster),enumerator-entered
+eligible_children_display,3.02,text,3.02 Number of children aged 9 to 59 completed months (calculated automatically from the roster),"auto-calculated, displayed read-only (corresponds to a paper question)"
 water_source,6.01,select_one water_source_list,6.01 What is the main source of drinking water for members of this household?,enumerator-entered
 toilet_type,6.02,select_one toilet_list,6.02 What kind of toilet facility do members of this household usually use?,enumerator-entered
 keeps_animals,6.03,select_one yesno,6.03 Does this household keep poultry or livestock inside the compound?,enumerator-entered

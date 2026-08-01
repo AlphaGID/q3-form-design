@@ -29,10 +29,14 @@ for r in survey.iter_rows(min_row=2, values_only=True):
     m = re.match(r"^([\d]+\.[\d]+(?:/[\d]+\.[\d]+)?)\s", label)
     question_number = m.group(1) if m else ""
 
+    readonly = r[col["readonly"]] if "readonly" in col else ""
+
     if calculation and not question_number:
         kind = "derived/internal (no paper question number)"
     elif type_ == "note":
         kind = "display note (not a stored response)"
+    elif calculation and readonly:
+        kind = "auto-calculated, displayed read-only (corresponds to a paper question)"
     else:
         kind = "enumerator-entered"
 
